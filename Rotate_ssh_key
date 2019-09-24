@@ -1,0 +1,40 @@
+
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair
+
+https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#KeyPairs:sort=keyName
+
+
+https://stackoverflow.com/questions/7881469/change-key-pair-for-ec2-instance
+
+
+Creating a Key Pair Using Amazon EC2
+
+To create your key pair using the Amazon EC2 console
+
+    Open the Amazon EC2 console at https://console.aws.amazon.com/ec2/.
+
+    In the navigation pane, under NETWORK & SECURITY, choose Key Pairs.
+
+    Note: The navigation pane is on the left side of the Amazon EC2 console. If you do not see the pane, it might be minimized; choose the arrow to expand the pane.
+
+    Choose Create Key Pair.
+
+    For Key pair name, enter a name for the new key pair, and then choose Create.
+
+    The private key file is automatically downloaded by your browser. The base file name is the name you specified as the name of your key pair, and the file name extension is .pem. Save the private key file in a safe place.
+
+    Important
+
+    This is the only chance for you to save the private key file. You'll need to provide the name of your key pair when you launch an instance and the corresponding private key each time you connect to the instance.
+
+    If you will use an SSH client on a Mac or Linux computer to connect to your Linux instance, use the following command to set the permissions of your private key file so that only you can read it.
+
+    chmod 400 my-key-pair.pem
+
+Run the below command
+ssh-keygen -f YOURKEY.pem -y
+
+copy the private key and add to authorized_keys in server.
+
+
+After remove old authorized_key and remove key_pair from AWS console
