@@ -1,0 +1,26 @@
+#Install AWSCLI 
+
+yum install awscli
+
+apt install awscli
+
+curl -O https://bootstrap.pypa.io/get-pip.py
+
+python get-pip.py --user
+
+pip install awscli
+
+
+#Copy Sigle file from Local to S3 Bucket
+
+aws s3 cp /var/www/file.tar.gz s3://Backup/
+
+#Sync Local to S3 Bucket
+
+aws s3 sync  /home/ec2-user/DBbackup/DB s3://Backup/DB/
+
+aws s3 sync  /var/www/html s3://Backup/Files
+
+#Sync S3 Bucket to Local
+
+aws s3 sync s3://Backup/Files/ ~/fils/
