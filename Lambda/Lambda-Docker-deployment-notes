@@ -1,0 +1,30 @@
+docker build -t test-1:latest .
+docker tag test-1:latest aws-id.dkr.ecr.us-east-1.amazonaws.com/test-1:1.3
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin aws-id.dkr.ecr.us-east-1.amazonaws.com
+docker push aws-id.dkr.ecr.us-east-1.amazonaws.com/test-1:1.3
+
+sh deploy-dev.sh
+
+aws lambda delete-function --function-name test-function
+
+aws lambda create-function --region us-east-1 \
+        --function-name test-function \
+        --package-type Image \
+        --code ImageUri=aws-id.dkr.ecr.us-east-1.amazonaws.com/test-1:1.3 \
+        --role arn:aws:iam::aws-id:role/lambda-ex \
+        --timeout 600 \
+        --memory-size 5120
+
+-------------------------------------------------------------
+To Check in Local
+
+docker run --rm -p 8000:8080 --name test-function aws-id.dkr.ecr.us-east-1.amazonaws.com/test-1:1.3
+curl -XPOST "http://localhost:8000/2015-03-31/functions/function/invocations" -d @input.json_6
+
+To Check Lambda
+
+aws lambda get-function-configuration --function-name test-function
+
+#If any error when push
+https://us-east-1.console.aws.amazon.com/ecr/repositories?region=us-east-1
+create repo and push
