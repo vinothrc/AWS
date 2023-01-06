@@ -1,3 +1,7 @@
 #Clear AWS ECR untagged images
-#/bin/bash
+
+#ap-south-1
 aws ecr describe-repositories --region ap-south-1 --output text | awk '{print $5}' | egrep -v '^$' | while read line; do  repo=$(echo $line | sed -e  "s/arn:aws:ecr.*\///g") ; aws ecr list-images  --region ap-south-1 --repository-name $repo --filter tagStatus=UNTAGGED --query 'imageIds[*]' --output text | while read imageId; do aws ecr batch-delete-image  --region ap-south-1 --repository-name $repo --image-ids imageDigest=$imageId; done; done
+
+#us-east-1
+aws ecr describe-repositories --region us-east-1 --output text | awk '{print $5}' | egrep -v '^$' | while read line; do  repo=$(echo $line | sed -e  "s/arn:aws:ecr.*\///g") ; aws ecr list-images  --region us-east-1 --repository-name $repo --filter tagStatus=UNTAGGED --query 'imageIds[*]' --output text | while read imageId; do aws ecr batch-delete-image  --region us-east-1 --repository-name $repo --image-ids imageDigest=$imageId; done; done
