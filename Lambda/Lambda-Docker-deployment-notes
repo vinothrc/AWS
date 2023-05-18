@@ -4,7 +4,7 @@ aws ecr get-login-password --region us-east-1 | docker login --username AWS --pa
 docker push aws-id.dkr.ecr.us-east-1.amazonaws.com/test-1:1.3
 
 sh deploy-dev.sh
-
+----------------------------------------------------------------------
 aws lambda delete-function --function-name test-function
 
 aws lambda create-function --region us-east-1 \
@@ -14,6 +14,22 @@ aws lambda create-function --region us-east-1 \
         --role arn:aws:iam::aws-id:role/lambda-ex \
         --timeout 600 \
         --memory-size 5120
+
+
+-----------------------------------Create with EFS-----------------------------------
+
+aws lambda delete-function --region ap-south-1 --function-name prediction
+
+aws lambda create-function --region ap-south-1 \
+        --function-name prediction \
+        --package-type Image \
+        --code ImageUri=0000001111.dkr.ecr.ap-south-1.amazonaws.com/prediction:1.0 \
+        --role arn:aws:iam::0000001111:role/lambda-build-role \
+	--vpc-config SubnetIds=subnet-6c1b5f21,subnet-71121c18,subnet-7fc93104,SecurityGroupIds=sg-035c4025ba73cd17 \
+	--file-system-configs Arn=arn:aws:elasticfilesystem:ap-south-1:0000001111:access-point/fsap-04a444f4fcc7fe05b,LocalMountPath=/mnt/efs-simplestats-models \
+        --timeout 900 \
+        --memory-size 1024
+
 
 -------------------------------------------------------------
 To Check in Local
