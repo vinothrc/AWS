@@ -1,6 +1,11 @@
 #!/bin/bash
 
+# Set your AWS credentials and token
+export AWS_ACCESS_KEY_ID="your_access_key_id"
+export AWS_SECRET_ACCESS_KEY="your_secret_access_key"
+
 REGION="us-west-2"
+
 
 # Step 1: Get all repositories starting with 'reponamespace/'
 repos=$(aws ecr describe-repositories --region $REGION --query 'repositories[?starts_with(repositoryName, `reponamespace/`)].repositoryName' --output text)
